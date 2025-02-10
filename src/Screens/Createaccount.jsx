@@ -1,5 +1,5 @@
-import Createlanding from "../Components/createlanding";
 import Footer from "../Components/Footer";
+import Createlanding from "./Createlanding";
 
 const Createaccount = () => {
   return (

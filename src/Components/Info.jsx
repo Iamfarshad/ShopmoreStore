@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { APP_NAME } from "../Constants/GlobalConstants";
 
 const LoginInfo = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("mor_2314");
+  const [password, setPassword] = useState("83r5^_");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
