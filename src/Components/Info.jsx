@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import car from "../assets/car.jpeg";
 import { Link } from "react-router-dom";
@@ -8,6 +9,12 @@ const LoginInfo = () => {
   const [password, setPassword] = useState("83r5^_");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,31 +28,52 @@ const LoginInfo = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: "mor_2314",
-          password: "83r5^_",
+          username,
+          password,
         }),
       });
-      console.log("response", response);
 
-      if (!response.ok) {
-        throw new Error(`Login failed: ${response.status}`);
-      }
+      // if (response.status === 401 && !response.ok) {
+      //   throw new Error("Invalid Credentials");
+      // }
 
       const data = await response.json();
-      console.log("Login Successful:", data);
-
       localStorage.setItem("authToken", data.token);
-      window.location.href = "/dashboard";
+      showToast("success", "Login Successful!");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1500);
     } catch (err) {
-      console.error("Error during login:", err.message);
-      setError(err.message);
+      showToast("danger", "Invalid Credentials");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="w-full h-screen bg-gray-50">
+    <section className="w-full h-screen bg-gray-50 relative">
+      {toast && (
+        <div
+          className={`fixed bottom-4 left-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 ${
+            toast.type === "success"
+              ? "text-white bg-green-100 dark:bg-green-800 dark:text-green-200"
+              : toast.type === "danger"
+              ? "text-white bg-red-100 dark:bg-red-800 dark:text-red-200"
+              : "text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200"
+          }`}
+          role="alert"
+        >
+          <div className="inline-flex items-center justify-center shrink-0 w-8 h-8">
+            {toast.type === "success"
+              ? "✔️"
+              : toast.type === "danger"
+              ? "❌"
+              : "⚠️"}
+          </div>
+          <div className="ms-3 text-sm font-normal">{toast.message}</div>
+        </div>
+      )}
+
       <div className="w-full h-52 flex justify-between items-center p-4 tab:flex-col tab:h-auto">
         <div className="flex justify-center tab:mb-4">
           <span className="text-lime-500 font-roboto text-5xl font-bold animate-slideInFromLeft phone:text-3xl">
@@ -61,10 +89,10 @@ const LoginInfo = () => {
         </div>
       </div>
 
-      <div className="w-full h-3/6 flex justify-center items-center mt-4 tab:mt-8 phone:h-auto">
+      <div className="w-full h-auto flex justify-center items-center mt-4 tab:mt-8 phone:h-auto">
         <div className="w-2/6 h-full bg-lime-500 rounded-lg p-2 tab:w-4/6 phone:w-11/12">
           <form
-            className="w-full h-full bg-gray-50 rounded-lg flex flex-col"
+            className="w-full h-full bg-gray-50 rounded-lg flex flex-col mx-auto p-2"
             onSubmit={handleSubmit}
           >
             <div className="w-full text-lime-500 text-center mb-6">
@@ -130,7 +158,7 @@ const LoginInfo = () => {
                 to="/createaccount"
                 className="text-lime-500 hover:text-black"
               >
-                Dont have an account? Create one.
+                Don&apos;t have an account? Create one.
               </Link>
             </div>
           </form>

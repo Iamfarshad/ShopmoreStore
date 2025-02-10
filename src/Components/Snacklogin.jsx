@@ -18,7 +18,7 @@ const Snacklogin = () => {
 
         <div className="p-2">
       <button  className="px-3 py-3 bg-white rounded-full transition ease-in duration-300 transform hover:bg-black hover:text-white hover:shadow-lg hover:scale-105">
-        <Link className="cursor-pointer" to="Login">Login</Link>
+        <Link className="cursor-pointer" to="login">Login</Link>
       </button>
     </div>
       </div>
